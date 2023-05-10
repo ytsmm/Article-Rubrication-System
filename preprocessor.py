@@ -65,8 +65,10 @@ def preprocessor(keywords):
     optData = []
     for line in keywords:
         optData.append(normalizer(line))
+
     for i in range(len(optData)):
         optData[i] = list(set(optData[i]))
+
     return optData, corpus
 
 
@@ -95,6 +97,7 @@ def lemma(token):
     lem = token.lower()
     for type in lemType:
         lem = lemmatizer.lemmatize(lem, type)
+
     if lem in corpus and len(lem) > 1 and (re.search(r'[A-z]+', lem) is not None) and lem not in stop_words:
         return lem
     else:

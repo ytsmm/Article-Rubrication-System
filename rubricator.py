@@ -1,5 +1,4 @@
 import json
-import traceback
 import vectorizer
 import preprocessor
 import pandas as pd
@@ -30,6 +29,7 @@ def writeData(doi, key, title, authors, X, labels, n, clusterKeywords, weights, 
             'axisY': str(X['Y'].values[i]),
             'class': str(labels[i])
         })
+
     for i in range(n):
         data['clusters'].append({
             'number': i,
@@ -37,6 +37,7 @@ def writeData(doi, key, title, authors, X, labels, n, clusterKeywords, weights, 
             'weights': weights[i],
             'quantity': size[i]
         })
+
     data['clusterQuantity'] = n
     with open('website/data.json', 'w') as outfile:
         json.dump(data, outfile, indent=2)
@@ -47,6 +48,7 @@ def writeData(doi, key, title, authors, X, labels, n, clusterKeywords, weights, 
 def getVocabulary(keys, words):
     vocabulary = {}
     newKeys = keys.copy()
+
     for i in range(len(newKeys)):
         words[i].split(', ')
         for word in newKeys[i].split(', '):
@@ -56,14 +58,11 @@ def getVocabulary(keys, words):
 
 
 def rubrication(clusterType):
-    try:
-        title, authors, doi, keys, words = getData()
-        newKeys, vocabulary = getVocabulary(keys, words)
-        keywords, model = preprocessor.preprocessor(words)
-        vectors = vectorizer.vectorizeApi(keywords, model)
-        labels, n, size = clusterizator.clusterization(vectors, clusterType)
-        clusterKeys, weights = clusterKeywords.getKeywords(vocabulary, newKeys, labels, n)
-        writeData(doi, keys, title, authors, vectors, labels, n, clusterKeys, weights, size)
-        return 1
-    except Exception as e:
-        return traceback.format_exc()
+    title, authors, doi, keys, words = getData()
+    newKeys, vocabulary = getVocabulary(keys, words)
+    keywords, model = preprocessor.preprocessor(words)
+    vectors = vectorizer.vectorizeApi(keywords, model)
+    labels, n, size = clusterizator.clusterization(vectors, clusterType)
+    clusterKeys, weights = clusterKeywords.getKeywords(vocabulary, newKeys, labels, n)
+    writeData(doi, keys, title, authors, vectors, labels, n, clusterKeys, weights, size)
+    return 1
