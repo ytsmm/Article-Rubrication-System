@@ -82,7 +82,7 @@ def checkCluster():
 window = Tk()
 window.title("Article Rubrication System")
 window.geometry('500x320')
-icon = PhotoImage(file="icon.png")
+icon = PhotoImage(file="ic.png")
 window.iconphoto(False, icon)
 window.configure(bg='white')
 
