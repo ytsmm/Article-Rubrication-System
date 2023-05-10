@@ -1,1 +1,60 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
+    <title>Article rubrication</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+        }
+        body { 
+            padding: 20px; 
+            margin-top: 30px; 
+        }
+        a { 
+            color: #006798; 
+            text-decoration: none; 
+        }
+        .article { 
+            margin-bottom: 24px; 
+        }
+        .anychart-credits { 
+            display: none; 
+        }
+        .topics { 
+            display: flex; 
+            justify-content: space-around; 
+            text-align: center; 
+        }
+        .user-select-none .svg-container { 
+            margin: 0 auto; 
+        }
+        .topicName, .filterArticle { 
+            margin-bottom: 10px; 
+            font-weight: bold; 
+        }
+        .topicKeyword, .topicName { 
+            cursor: pointer; 
+        }
+        .topicKeyword:hover, .topicName:hover { 
+            text-decoration: underline; 
+        }
+        .articleList {
+            margin-top: 30px;
+        }
+        .filterArticle {
+            font-size: 20px;
+        }
+    </style>  
+</head>
+<body>
+    <div class="content"></div>
+    <div class="container"></div>   
+</body>
+<script src="script.js"></script>
+</html>
+    
