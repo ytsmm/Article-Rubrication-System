@@ -1,5 +1,6 @@
 import os
 import requests
+import traceback
 import pandas as pd
 from PyPDF2 import PdfReader
 from bs4 import BeautifulSoup as bs
@@ -89,9 +90,12 @@ def csvWriter(data):
 
 
 def getRequest(key, link):
-    if key == 1:
-        data = webParser(link)
-    elif key == 2:
-        data = comboParser(link)
-    csvWriter(data)
-    return 1
+    try:
+        if key == 'Web-parsing':
+            data = webParser(link)
+        elif key == 'PDF':
+            data = comboParser(link)
+        csvWriter(data)
+        return 1
+    except Exception as e:
+        return traceback.format_exc()

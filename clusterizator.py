@@ -12,7 +12,6 @@ def clusterization(X, clusterType):
         elif clusterType == 'K-Means':
             clResult.append(KMeans(n_clusters=i))
         k.append(i)
-    print(clResult)
     scores = []
     for i in range(8):
         scores.append(silhouette_score(X, clResult[i].fit_predict(X)))
@@ -29,5 +28,4 @@ def clusterization(X, clusterType):
             if j == i:
                 count += 1
         quantity.append(count)
-    print(scores)
     return labels, optimalScore, quantity

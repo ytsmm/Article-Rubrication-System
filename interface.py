@@ -4,8 +4,8 @@ import rubricator
 import visualizator
 from tkinter import *
 from tkinter import filedialog
-from tkinter.messagebox import showwarning
 from customtkinter import CTkComboBox, CTkButton
+from tkinter.messagebox import showwarning, showinfo
 
 
 file_path = ''
@@ -17,9 +17,9 @@ def parserWindow():
     parsWindow = Toplevel()
     parsWindow.title("Parsing")
     parsWindow.geometry('400x200')
-    # parsWindow.iconphoto(False, icon)
+    parsWindow.iconphoto(False, icon)
     parsWindow.grab_set()
-    # parsWindow.iconphoto(False, icon)
+    parsWindow.iconphoto(False, icon)
     c = parseCB.get()
     if c == 'PDF':
         Label(parsWindow, text='Enter the full path to the folder you want to parse:', font=("Arial", 9)).pack(anchor=NW, pady=(20, 10), padx=20)
@@ -45,39 +45,45 @@ def chooseFile():
 
 def checkParser(path):
     parserType = parseCB.get()
-    if parserType == 'Web-parsing':
-        dataParser.getRequest(1, path)
-    elif parserType == 'PDF':
-        dataParser.getRequest(2, path)
+    res = dataParser.getRequest(parserType, path)
+    if res == 1:
+        showinfo(title='Information', message='Successfully')
+    else:
+        showwarning(title="Warning", message=res)
     return 1
 
 
 def checkFile():
     if not os.path.exists('data.csv'):
-        showwarning(title="Warning", message="Data file doesn't exist, please parse data first.")
+        showwarning(title="Warning", message="Data file does not exist, please parse data first")
     else:
         clusterType = clCB.get()
-        rubricator.rubrication(clusterType)
+        res = rubricator.rubrication(clusterType)
+        if res == 1:
+            showinfo(title='Information', message='Successfully')
+        else:
+            showwarning(title="Warning", message=res)
     return 1
 
 
 def checkCluster():
     if not os.path.exists('website/data.json'):
-        showwarning(title="Warning", message="Data file doesn't exist, please parse data before clustering.")
+        showwarning(title="Warning", message="Data file does not exist, please parse data before clustering")
     else:
         visType = visCB.get()
-        if visType == 'List':
-            visualizator.createHtml(1)
-        elif visType == 'Dot plot':
-            visualizator.createHtml(2)
+        res = visualizator.visualize(visType)
+        if res == 1:
+            showinfo(title='Information', message='Successfully')
+        else:
+            showwarning(title="Warning", message=res)
     return 1
 
 
 window = Tk()
-window.title("Articles rubrication")
+window.title("Article Rubrication System")
 window.geometry('500x320')
-# icon = PhotoImage(file="icon.png")
-# window.iconphoto(False, icon)
+icon = PhotoImage(file="icon.png")
+window.iconphoto(False, icon)
 window.configure(bg='white')
 
 Label(window, text='Select the type of parsing:', background='white', font=("Arial", 11)).grid(row=0, column=0, pady=(20, 10), padx=(0, 0))
