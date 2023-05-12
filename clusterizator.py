@@ -4,8 +4,7 @@ from sklearn.cluster import KMeans, AgglomerativeClustering
 
 
 def clusterization(X, clusterType):
-    k = []
-    clResult = []
+    k = [], clResult = [], scores = [], quantity = []
 
     for i in range(2, 10):
         if clusterType == 'Hierarchial':
@@ -14,7 +13,6 @@ def clusterization(X, clusterType):
             clResult.append(KMeans(n_clusters=i))
         k.append(i)
 
-    scores = []
     for i in range(8):
         scores.append(silhouette_score(X, clResult[i].fit_predict(X)))
 
@@ -25,7 +23,6 @@ def clusterization(X, clusterType):
         model = KMeans(n_clusters=optimalScore).fit(X)
 
     labels = model.labels_
-    quantity = []
     
     for i in range(optimalScore):
         count = 0
