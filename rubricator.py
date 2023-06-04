@@ -1,4 +1,5 @@
 import json
+import traceback
 import vectorizer
 import preprocessor
 import pandas as pd
@@ -7,7 +8,7 @@ import clusterKeywords
 
 
 def getData():
-    file = "data.csv"
+    file = "tests/tryData.csv"
     data = pd.read_csv(file, sep=';')
     title = data['Title'].to_numpy()
     authors = data['Authors'].to_numpy()
@@ -45,24 +46,17 @@ def writeData(doi, key, title, authors, X, labels, n, clusterKeywords, weights, 
     return 1
 
 
-def getVocabulary(keys, words):
-    vocabulary = {}
-    newKeys = keys.copy()
-
-    for i in range(len(newKeys)):
-        words[i].split(', ')
-        for word in newKeys[i].split(', '):
-            vocabulary[word.lower()] = word
-        newKeys[i] = newKeys[i].lower().split(', ')
-    return newKeys, vocabulary
-
-
+# Функция запускает поочередный вызов модулей, выполняющих рубрикацию
+# clusterType – строковый параметр, содержащий тип кластеризации
+# result – возвращаемое значение: 1 при успешном выполнении или ошибка
 def rubrication(clusterType):
-    title, authors, doi, keys, words = getData()
-    newKeys, vocabulary = getVocabulary(keys, words)
-    keywords, model = preprocessor.preprocessor(words)
-    vectors = vectorizer.vectorizeApi(keywords, model)
-    labels, n, size = clusterizator.clusterization(vectors, clusterType)
-    clusterKeys, weights = clusterKeywords.getKeywords(vocabulary, newKeys, labels, n)
-    writeData(doi, keys, title, authors, vectors, labels, n, clusterKeys, weights, size)
-    return 1
+    try:
+        title, authors, doi, keys, words = getData()
+        keywords = preprocessor.preprocessor(words)
+        vectors = vectorizer.vectorizing(keywords)
+        labels, n, size = clusterizator.clusterization(vectors, clusterType)
+        clusterKeys, weights = clusterKeywords.getKeywords(keys, words, labels, n)
+        writeData(doi, keys, title, authors, vectors, labels, n, clusterKeys, weights, size)
+        return 1
+    except Exception as e:
+        return (traceback.format_exc().splitlines())[-1]

@@ -6,9 +6,18 @@ from bs4 import BeautifulSoup as bs
 
 
 def normalizer(text):
-    symbols = {'-\n': '', '\n': '', '\t': '', 'ﬁ': 'fi', 'ﬀ': 'ff', 'ﬂ': 'fl', 'ﬃ': 'ffi', 'ﬄ': 'ffl', '\x0c': 'fi', '\xa0': ' ', 'Abstract': ''}
-    for symbol in symbols:
-        text = text.replace(symbol, symbols[symbol])
+    text = text.replace('-\n', '')
+    text = text.replace('\n', '')
+    text = text.replace('\t', '')
+    text = text.replace('ﬁ', 'fi')
+    text = text.replace('ﬀ', 'ff')
+    text = text.replace('ﬂ', 'fl')
+    text = text.replace('ﬃ', 'ffi')
+    text = text.replace('ﬃ', 'ffi')
+    text = text.replace('ﬄ', 'ffl')
+    text = text.replace('\x0c', 'fi')
+    text = text.replace('\xa0', ' ')
+    text = text.replace('Abstract', '')
     return text
 
 
@@ -37,6 +46,7 @@ def comboParser(link):
                 if text.find("DOI") != -1:
                     doiText = (text[text.find('DOI'):])[5:24]
                     if doiText.find('jsfi') != -1:
+                        print(doiText)
                         text = text[:text.find("Introduction")]
                         start = text.find('eywords:')
                         keywords = ''
@@ -54,17 +64,15 @@ def webParser(link):
     response = requests.get(link)
     soup = bs(response.content, 'html.parser')
     journals = soup.find_all('a', class_="cover")
-
     while soup.find('a', class_='next'):
         r = requests.get(soup.find('a', class_='next')['href'])
         soup = bs(r.text, "html.parser")
         journals.extend(soup.find_all('a', class_="cover"))
-
     for journal in journals:
+        print(journal['href'])
         r = requests.get(journal['href'])
         soup = bs(r.text, "html.parser")
         articles = soup.find_all('div', 'obj_article_summary')
-
         for article in articles:
             meta = article.find_all('div', 'meta')
             if len(meta) == 2:
@@ -81,11 +89,9 @@ def csvWriter(data):
 
 
 def getRequest(key, link):
-    if key == 'Web-parsing':
+    if key == 1:
         data = webParser(link)
-
-    elif key == 'PDF':
+    elif key == 2:
         data = comboParser(link)
-
     csvWriter(data)
     return 1

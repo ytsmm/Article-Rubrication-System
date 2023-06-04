@@ -9,19 +9,16 @@ def vectorizeApi(list_of_docs, model):
     for tokens in list_of_docs:
         zero_vector = np.zeros(model.vector_size)
         vectors = []
-
         for token in tokens:
             if token in model:
                 try:
                     vectors.append(model[token])
                 except KeyError:
                     continue
-
         if vectors:
             vectors = np.asarray(vectors)
             avg_vec = vectors.mean(axis=0)
             features.append(avg_vec)
-
         else:
             features.append(zero_vector)
     vectorized_docs = pcaModule(features)

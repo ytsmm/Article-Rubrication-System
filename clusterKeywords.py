@@ -9,20 +9,17 @@ def getKeywords(vocabulary, keywords, labels, n):
             if labels[j] == i:
                 text.extend(keywords[j])
         texts.append(text)
-
     result = []
     terms = []
     for text in texts:
         for word in text:
             if word not in terms:
                 terms.append(word)
-
     for text in texts:
         textRes = []
         for t in terms:
             textRes.append(tfidf(t, text, texts))
         result.append(textRes)
-
     maxes = []
     weights = []
     for i in result:
@@ -31,7 +28,6 @@ def getKeywords(vocabulary, keywords, labels, n):
         kw, weight = top(t, line, vocabulary)
         maxes.append(kw)
         weights.append(weight)
-
     while True:
         words = []
         for m in maxes:
@@ -40,14 +36,12 @@ def getKeywords(vocabulary, keywords, labels, n):
         dup = [x for i, x in enumerate(words) if i != words.index(x)]
         dup = list(set(dup))
         y = 0
-
         for d in dup:
             y = 1
             ind = terms.index(d.lower())
             for k in range(len(result)):
                 result[k].pop(ind)
             terms.remove(d.lower())
-
         if y == 1:
             maxes = []
             weights = []
@@ -68,7 +62,6 @@ def top(words, line, vocabulary):
     while len(maxTerms) < 10:
         maxValue = max(line)
         term = words[line.index(maxValue)]
-
         if term not in maxTerms:
             maxTerms.append(vocabulary[term])
             weights.append(maxValue)
