@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Biryani:wght@600&family=Inknut+Antiqua:wght@600&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
     <title>Article rubrication</title>
     <style>
         * { 
@@ -12,38 +13,47 @@
             padding: 0; 
         }
         body { 
-            font-size: 14px; 
             padding: 20px; 
-            margin-top: 20px; 
+            margin-top: 30px; 
             font-family: 'Noto Sans', sans-serif;
         }
         a { 
             color: #006798; 
             text-decoration: none; 
         }
-        h2, .article, .content, .articleList { 
+        .article { 
             margin-bottom: 24px; 
+            font-size: 14px;
         }
-        h3, h4, .classContent, .articleLink, p.data { 
-            margin-bottom: 10px;
+        .anychart-credits { 
+            display: none; 
         }
-        .doiLink { 
+        .topics { 
+            display: flex; 
+            justify-content: space-around; 
+            text-align: center; 
+            flex-wrap: wrap;
+        }
+        .user-select-none .svg-container { 
+            margin: 0 auto; 
+        }
+        .topicName, .filterArticle { 
+            margin-bottom: 10px; 
+            font-weight: bold; 
+        }
+        .topicKeyword, .topicName { 
+            cursor: pointer; 
+        }
+        .topicKeyword:hover, .topicName:hover { 
             text-decoration: underline; 
         }
-        .disable {
-            display: none;
+        .articleList {
+            margin-top: 30px;
         }
-        .btnMore {
-            padding: 7px 12px;
-            background: #006798;
-            border: none;
-            border-radius: 5%;
-            color: white;
-            font-size: 16px;
-            font-family: 'Noto Sans', sans-serif;
-            cursor: pointer;
+        .filterArticle {
+            font-size: 20px;
         }
-    </style>
+    </style>  
 </head>
 <body>
     <div class="content"></div>
