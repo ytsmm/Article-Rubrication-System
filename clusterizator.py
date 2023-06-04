@@ -64,7 +64,7 @@ def hierarchial(X):
     plt.xlabel('Number of clusters', fontsize=16)
     plt.ylabel('Silhouette coefficient', fontsize=16)
     plt.show()
-    Dendrogram = shc.dendrogram((shc.linkage(X, method='ward')), leaf_font_size=10)
+    Dendrogram = shc.dendrogram((shc.linkage(X, method='ward')), leaf_font_size=6)
     plt.show()
     plt.figure(figsize=(6, 6))
     plt.scatter(X['X'], X['Y'], c=clResult[optimalScore - 2].fit_predict(X), cmap='rainbow')

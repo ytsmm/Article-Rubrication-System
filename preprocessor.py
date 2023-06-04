@@ -1,14 +1,12 @@
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-import gensim.downloader as api
 import string
 import re
 
 
-lemType = ['v', 'n', 'r', 's', 'a']
-corpus = api.load("glove-wiki-gigaword-50")
 lemmatizer = WordNetLemmatizer()
+lemType = ['n', 'r', 's', 'a']
 punctuation = string.punctuation
 stop_words = stopwords.words('english')
 stop_words.extend(punctuation)
@@ -61,23 +59,31 @@ stop_words.extend(["'s", "’s", 'although', "a's", "able", "about", "above", "a
      "yourself", "yourselves", "zero", "``", "--", "e.g", "and/or", "lu", "lo"])
 
 
-def preprocessor(keywords):
+# Функция запускает процесс морфологической обработки
+# data - строковый массив данных о статьях
+# optData - строковый массив предобработанных данных
+def preprocessor(data):
     optData = []
-    for line in keywords:
+    for line in data:
         optData.append(normalizer(line))
+
     for i in range(len(optData)):
         optData[i] = list(set(optData[i]))
-    return optData, corpus
+    return optData
 
 
 def normalizer(line):
     normLine = []
+    l = []
     line = word_tokenize(line)
     symbols = ['-', '/', '+']
     for token in line:
+        token = token.lower()
         if token not in punctuation:
             if token[0] == ' ':
                 token = token[1:]
+            if len(token) > 1 and (re.search(r'[A-z]+', token) is not None) and token not in stop_words:
+                l.append(token)
             for symbol in symbols:
                 if symbol in token:
                     words = token.split(symbol)
@@ -86,16 +92,17 @@ def normalizer(line):
                         if lem != 1:
                             normLine.append(lem)
             lem = lemma(token)
-            if lem != 1:
+            if lem != -1:
                 normLine.append(lem)
     return normLine
 
 
 def lemma(token):
-    lem = token.lower()
+    lem = lemmatizer.lemmatize(token, 'v')
     for type in lemType:
         lem = lemmatizer.lemmatize(lem, type)
-    if lem in corpus and len(lem) > 1 and (re.search(r'[A-z]+', lem) is not None) and lem not in stop_words:
+
+    if len(lem) > 1 and (re.search(r'[A-z]+', lem) is not None) and lem not in stop_words:
         return lem
     else:
-        return
+        return -1

@@ -8,7 +8,7 @@ import clusterKeywords
 
 
 def getData():
-    file = "tests/tryData.csv"
+    file = "data.csv"
     data = pd.read_csv(file, sep=';')
     title = data['Title'].to_numpy()
     authors = data['Authors'].to_numpy()
