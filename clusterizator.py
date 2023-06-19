@@ -1,8 +1,6 @@
 import numpy as np
 from sklearn.metrics import silhouette_score
 from sklearn.cluster import KMeans, AgglomerativeClustering
-import matplotlib.pyplot as plt
-import scipy.cluster.hierarchy as shc
 
 
 # Функция выполняет кластеризацию числовых данных
@@ -34,15 +32,6 @@ def kmeans(X):
     labels = model.labels_
     number = [sum([1 for j in labels if j == i]) for i in range(optimalScore)]
 
-    plt.plot(k, scores, marker='o')
-    plt.xlabel('Number of clusters', fontsize=16)
-    plt.ylabel('Silhouette coefficient', fontsize=16)
-    plt.show()
-
-    plt.figure(figsize=(6, 6))
-    plt.scatter(X['X'], X['Y'], c=clResult[optimalScore - 2].fit_predict(X), cmap='rainbow')
-    plt.show()
-
     return labels, optimalScore, number
 
 
@@ -59,18 +48,5 @@ def hierarchial(X):
     model = AgglomerativeClustering(metric='euclidean', n_clusters=optimalScore, linkage='ward').fit(X)
     labels = model.labels_
     number = [sum([1 for j in labels if j == i]) for i in range(optimalScore)]
-
-    plt.plot(k, scores, marker='o')
-    plt.xlabel('Количество кластеров', fontsize=16)
-    plt.ylabel('Силуэтный коэффициент S', fontsize=16)
-    plt.show()
-
-    Dendrogram = shc.dendrogram((shc.linkage(X, method='ward')), leaf_font_size=6)
-    plt.show()
-    plt.figure(figsize=(6, 6))
-    plt.scatter(X['X'], X['Y'], c=clResult[optimalScore - 2].fit_predict(X), cmap='rainbow')
-    plt.xlabel('X', fontsize=16)
-    plt.ylabel('Y', fontsize=16)
-    plt.show()
 
     return labels, optimalScore, number
