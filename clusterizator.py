@@ -11,7 +11,7 @@ from sklearn.cluster import KMeans, AgglomerativeClustering
 # size – целочисленный массив с количеством статей в каждом кластере
 def clusterization(vectors, clusterType):
     if clusterType == 'Hierarchical clustering':
-        labels, n, size = hierarchial(vectors)
+        labels, n, size = hierarchical(vectors)
         return labels, n, size
     elif clusterType == 'K-Means clustering':
         labels, n, size = kmeans(vectors)
@@ -35,7 +35,7 @@ def kmeans(X):
     return labels, optimalScore, number
 
 
-def hierarchial(X):
+def hierarchical(X):
     k = []
     clResult = []
 
