@@ -74,7 +74,6 @@ def preprocessor(data):
 
 def normalizer(line):
     normLine = []
-    l = []
     line = word_tokenize(line)
     symbols = ['-', '/', '+']
     for token in line:
@@ -82,8 +81,6 @@ def normalizer(line):
         if token not in punctuation:
             if token[0] == ' ':
                 token = token[1:]
-            if len(token) > 1 and (re.search(r'[A-z]+', token) is not None) and token not in stop_words:
-                l.append(token)
             for symbol in symbols:
                 if symbol in token:
                     words = token.split(symbol)

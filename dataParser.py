@@ -37,7 +37,6 @@ def articleParser(article, keywords, link):
         keywords = keywords.replace(';', ',')
         line.append(keywords)
 
-    print(line)
     return {'Title': line[0], 'Authors': line[1], 'Doi': line[2], 'Abstract': line[3], 'Keywords': line[4]}
 
 
@@ -51,7 +50,7 @@ def comboParser(link):
                 page = reader.pages[i]
                 text = page.extract_text()
                 text = normalizer(text)
-                if text.find("DOI") != -1:
+                if text.find("DOI: ") != -1:
                     doiText = (text[text.find('DOI'):])[5:24]
                     if doiText.find('jsfi') != -1:
                         text = text[:text.find("Introduction")]
@@ -71,13 +70,13 @@ def webParser(link):
     response = requests.get(link)
     soup = bs(response.content, 'html.parser')
     journals = soup.find_all('a', class_="title")
-    print(soup.find('a', class_='next'))
     while soup.find('a', class_='next'):
         r = requests.get(soup.find('a', class_='next')['href'])
         soup = bs(r.text, "html.parser")
         journals.extend(soup.find_all('a', class_="title"))
 
     for journal in journals:
+        print(journal['href'])
         r = requests.get(journal['href'])
         soup = bs(r.text, "html.parser")
         articles = soup.find_all('div', 'obj_article_summary')

@@ -3,7 +3,6 @@ import pandas as pd
 import gensim.downloader as api
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, normalize
-from sklearn.manifold import TSNE
 
 corpus = api.load("glove-wiki-gigaword-50")
 
@@ -32,9 +31,9 @@ def vectorizing(data):
         else:
             features.append(zero_vector)
 
-    vectorized_docs = pcaModule(features)
+    vectorData = pcaModule(features)
 
-    return vectorized_docs
+    return vectorData
 
 
 def pcaModule(X):
