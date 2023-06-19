@@ -69,7 +69,7 @@ def checkFile():
 
 def checkCluster():
     if not os.path.exists('website/data.json'):
-        showwarning(title="Warning", message="Data file does not exist, please parse data before clustering")
+        showwarning(title="Warning", message="Data file does not exist, rubricate data before visualization")
     else:
         visType = visCB.get()
         res = visualizator.visualize(visType)
